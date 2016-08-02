@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var storage = [];
 var app = express();
+app.set("port", process.env.PORT || 3000);
 
 // Use the session middleware
 app.use(session({
@@ -144,7 +145,7 @@ app.use(function(err, req, res, next) {
 
 /* initializing rethinkdb*/
 
-app.set("port", process.env.PORT || 3000);
+
 module.exports = app;
 
 
