@@ -31,54 +31,7 @@ var oneir_commands = require('./routes/oneir_commands');
 var oneir = require('./routes/oneir');
 var oneir_session_name = require('./routes/oneir_session_name');
 
-app.get("/menu",function(req,res){
-            res.render("menu");
-      });
 
-app.get("/login_check",function(req,res){
-           if(req.session.idx) res.json({'id' : 1});
-           else                res.json({'id' : 0});
-           res.end();
-      });
-
-app.get("/oneir_session_login",function(req,res){
-             if(req.query.id)
-             { 
-               req.session.idx = req.query.id;
-               res.json({'id' : 1});
-             }
-             res.end();
-      });
-
-app.get("/oneir_logout",function(req,res){
-           req.session.idx = null;
-           req.session.destroy(function(err) {});
-           res.end();
-        });
-       
-app.get("/oneir_commands",function(req,res){
-           //if(req.query.q && req.session.idx) 
-              storage[req.session.idx] = req.query.q;  
-              res.end();    
-        });
-
-app.get("/oneir",function(req,res){
-           var temp = 0;
-           if(req.query.q != null && storage[req.query.q] != null)
-           { 
-              temp = storage[req.query.q];
-              storage[req.query.q] = null;
-           }
-            res.header('Content-Lenght', temp);         
-           res.status(200).json({'command' : temp});
-           res.end();
-        });
-
-app.get("/oneir_session_name",function(req,res){
-           if(req.session.idx !== null) 
-           res.json({ 'id' : req.session.idx});
-           res.end();
-        });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
