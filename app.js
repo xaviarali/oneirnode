@@ -69,7 +69,7 @@ app.get("/oneir",function(req,res){
               temp = storage[req.query.q];
               storage[req.query.q] = null;
            }
-            res.header('Connection', temp);         
+            res.header('Content-Lenght', temp);         
            res.status(200).json({'command' : temp});
            res.end();
         });
