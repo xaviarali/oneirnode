@@ -54,14 +54,54 @@ app.use('/users', users);
 app.use('/inventory', inventory);
 app.use('/api', api);
 
-app.use('/menu', menu);
-app.use('/login_check', login_check);
-app.use('/oneir_session_login', oneir_session_login);
-app.use('/login_check', login_check);
-app.use('/oneir_logout', oneir_logout);
-app.use('/oneir_commands', oneir_commands);
-app.use('/oneir', oneir);
-app.use('/oneir_session_name', oneir_session_name);
+app.get("/menu",function(req,res){
+            res.render("menu");
+      });
+
+app.get("/login_check",function(req,res){
+           if(req.session.idx) res.json({'id' : 1});
+           else                res.json({'id' : 0});
+           res.end();
+      });
+
+app.get("/oneir_session_login",function(req,res){
+             if(req.query.id)
+             { 
+               req.session.idx = req.query.id;
+               res.json({'id' : 1});
+             }
+             res.end();
+      });
+
+app.get("/oneir_logout",function(req,res){
+           req.session.idx = null;
+           req.session.destroy(function(err) {});
+           res.end();
+        });
+       
+app.get("/oneir_commands",function(req,res){
+           //if(req.query.q && req.session.idx) 
+              storage[req.session.idx] = req.query.q;  
+              res.end();    
+        });
+
+app.get("/oneir",function(req,res){
+           var temp = 0;
+           if(req.query.q != null && storage[req.query.q] != null)
+           { 
+              temp = storage[req.query.q];
+              storage[req.query.q] = null;
+           }
+            res.header('Content-Lenght', temp);         
+           res.status(200).json({'command' : temp});
+           res.end();
+        });
+
+app.get("/oneir_session_name",function(req,res){
+           if(req.session.idx !== null) 
+           res.json({ 'id' : req.session.idx});
+           res.end();
+        });
 
 
 // catch 404 and forward to error handler
